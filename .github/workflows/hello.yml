@@ -1,0 +1,13 @@
+name: My First Workflow
+
+on: [push]
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print a greeting
+        run: echo "Hello! The robot ran my commands."
+
+      - name: Show the date
+        run: date
