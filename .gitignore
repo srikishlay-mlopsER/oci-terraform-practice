@@ -1,0 +1,12 @@
+# Terraform state - never commit (contains resource details)
+*.tfstate
+*.tfstate.*
+
+# Terraform working directory
+.terraform/
+.terraform.lock.hcl
+
+# Private keys / secrets - NEVER commit
+*.pem
+*.key
+.env
