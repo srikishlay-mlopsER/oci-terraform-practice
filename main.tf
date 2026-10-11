@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     oci = {
-      source  = "oracle/oci"
+      source = "oracle/oci"
     }
   }
   backend "s3" {
@@ -17,17 +17,21 @@ terraform {
   }
 }
 
+variable "tenancy_ocid" {}
+variable "user_ocid" {}
+variable "fingerprint" {}
+
 provider "oci" {
-  tenancy_ocid     = "ocid1.tenancy.oc1..aaaaaaaav3sbqm3azwxiuvxpinv4ueg67s4xvpcgsz5vvidj3wkrjergxlda"
-  user_ocid        = "ocid1.user.oc1..aaaaaaaaquulymelffausdswjsrx3fnnhgh726imh7mn4o6xgdsxso6olxda"
-  fingerprint      = "e3:04:45:84:47:3f:5f:39:95:70:3d:56:20:13:ea:10"
-  private_key_path = "C:\\Users\\lenovo\\.oci\\oci_api_key.pem"
+  tenancy_ocid     = var.tenancy_ocid
+  user_ocid        = var.user_ocid
+  fingerprint      = var.fingerprint
+  private_key_path = pathexpand("~/.oci/oci_api_key.pem")
   region           = "ap-hyderabad-1"
 }
 
 # Ask OCI to list availability domains - a safe, read-only test
 data "oci_identity_availability_domains" "ads" {
-  compartment_id = "ocid1.tenancy.oc1..aaaaaaaav3sbqm3azwxiuvxpinv4ueg67s4xvpcgsz5vvidj3wkrjergxlda"
+  compartment_id = var.tenancy_ocid
 }
 
 output "availability_domains" {
@@ -35,8 +39,7 @@ output "availability_domains" {
 }
 
 resource "oci_identity_compartment" "practice" {
-  compartment_id = "ocid1.tenancy.oc1..aaaaaaaav3sbqm3azwxiuvxpinv4ueg67s4xvpcgsz5vvidj3wkrjergxlda"
+  compartment_id = var.tenancy_ocid
   name           = "terraform-practice-compartment"
   description    = "Created via Terraform for interview practice"
 }
-
